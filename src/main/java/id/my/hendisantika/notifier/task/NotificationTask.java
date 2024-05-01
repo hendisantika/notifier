@@ -1,5 +1,6 @@
 package id.my.hendisantika.notifier.task;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -18,9 +19,10 @@ import java.time.Instant;
  */
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class NotificationTask implements Task {
 
-    private NotificationGeneratorServiceImpl notificationGeneratorService;
+    private final NotificationGeneratorServiceImpl notificationGeneratorService;
 
     //    @Scheduled(cron = "*/5 * * * * *" )
     @Scheduled(fixedRate = 5000)
