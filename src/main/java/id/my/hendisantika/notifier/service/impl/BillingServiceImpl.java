@@ -1,5 +1,6 @@
 package id.my.hendisantika.notifier.service.impl;
 
+import id.my.hendisantika.notifier.exception.NotFoundException;
 import id.my.hendisantika.notifier.model.Billing;
 import id.my.hendisantika.notifier.repository.BillingRepository;
 import id.my.hendisantika.notifier.service.BillingService;
@@ -7,6 +8,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 /**
  * Created by IntelliJ IDEA.
@@ -29,5 +32,12 @@ public class BillingServiceImpl implements BillingService {
     public Iterable<Billing> listAllBillings() {
         logger.debug("listAllBillings called");
         return billingRepository.findAll();
+    }
+
+    @Override
+    public Billing getBillingById(Long id) {
+        logger.debug("getBillingById called");
+        return Optional.ofNullable(billingRepository.findOne(id)).orElseThrow(() ->
+                new NotFoundException("Customer with id: " + id + "does not exist."));
     }
 }
