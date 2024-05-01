@@ -53,4 +53,10 @@ public class CustomerServiceImpl implements CustomerService {
         log.debug("deleteProduct called");
         customerRepository.deleteById(id);
     }
+
+    @Override
+    public Customer getCustomerByEmail(String email) {
+        log.debug("getCustomerByEmail called");
+        return customerRepository.findByEmail(email);
+    }
 }
