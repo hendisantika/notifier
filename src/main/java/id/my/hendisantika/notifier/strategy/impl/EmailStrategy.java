@@ -1,6 +1,10 @@
 package id.my.hendisantika.notifier.strategy.impl;
 
 import freemarker.template.Configuration;
+import freemarker.template.Template;
+import id.my.hendisantika.notifier.model.Billing;
+import id.my.hendisantika.notifier.model.Customer;
+import id.my.hendisantika.notifier.model.Email;
 import id.my.hendisantika.notifier.model.NotificationType;
 import id.my.hendisantika.notifier.strategy.NotificationStrategy;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +13,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by IntelliJ IDEA.
@@ -33,5 +41,18 @@ public class EmailStrategy implements NotificationStrategy {
     @Override
     public boolean match(NotificationType type) {
         return type == NotificationType.EMAIL;
+    }
+
+    @Override
+    public void generate(Billing billing, Customer customer) throws Exception {
+
+        Map<String, Object> model = new HashMap<>();
+        model.put("billing", billing);
+        model.put("customer", customer);
+
+        Template template = freeMarkerConfiguration.getTemplate("email.ftl");
+        String content = FreeMarkerTemplateUtils.processTemplateIntoString(template, model);
+        Email email = new Email(customer.getEmail(), content);
+        jmsTemplate.convertAndSend("notifier.email", email);
     }
 }
