@@ -1,6 +1,7 @@
 package id.my.hendisantika.notifier.strategy.impl;
 
 import freemarker.template.Configuration;
+import id.my.hendisantika.notifier.model.NotificationType;
 import id.my.hendisantika.notifier.strategy.NotificationStrategy;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,4 +29,9 @@ public class EmailStrategy implements NotificationStrategy {
 
     private final Configuration freeMarkerConfiguration;
     private final JmsTemplate jmsTemplate;
+
+    @Override
+    public boolean match(NotificationType type) {
+        return type == NotificationType.EMAIL;
+    }
 }
