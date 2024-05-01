@@ -7,6 +7,7 @@ import id.my.hendisantika.notifier.model.NotificationType;
 import id.my.hendisantika.notifier.service.BillingService;
 import id.my.hendisantika.notifier.service.CustomerService;
 import id.my.hendisantika.notifier.service.NotificationGeneratorService;
+import id.my.hendisantika.notifier.strategy.NotificationContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by IntelliJ IDEA.
@@ -40,9 +42,9 @@ public class NotificationGeneratorServiceImpl implements NotificationGeneratorSe
 
         billings.forEach((Billing billing) -> {
             try {
-                Customer customer = customerService.getCustomerById(billing.getCustomerId());
+                Optional<Customer> customer = customerService.getCustomerById(billing.getCustomerId());
                 for (NotificationType type : NotificationType.values()) {
-                    notificationContext.generate(type, billing, customer);
+                    notificationContext.generate(type, billing, customer.orElse(null));
                 }
 
                 billing.setNotificationStatus(NotificationStatus.GENERATED);

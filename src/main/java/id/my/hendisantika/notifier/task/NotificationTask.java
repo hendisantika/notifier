@@ -1,5 +1,6 @@
 package id.my.hendisantika.notifier.task;
 
+import id.my.hendisantika.notifier.service.impl.NotificationGeneratorServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
