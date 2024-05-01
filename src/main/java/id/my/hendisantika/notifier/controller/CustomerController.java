@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -69,6 +70,24 @@ public class CustomerController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         } catch (Exception ex) {
             log.warn("Problem in findById for Customer!", ex);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    @GetMapping(value = "/email")
+    @Operation(summary = "Return a customer by email.", description = "Return a customer by email.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "404", description = "Customer with specified email does not exist in the system."),
+            @ApiResponse(responseCode = "500", description = "Server Internal Error")})
+    public ResponseEntity findByEmail(@Param(value = "Email of customer") @RequestParam("email") String email) {
+        try {
+            Customer result = customerService.getCustomerByEmail(email);
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } catch (NotFoundException nfe) {
+            log.warn("Customer with email:{} not found!", email, nfe);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        } catch (Exception ex) {
+            log.warn("Problem in findByEmail for customer:", ex);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
