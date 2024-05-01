@@ -4,6 +4,7 @@ import id.my.hendisantika.notifier.exception.NotFoundException;
 import id.my.hendisantika.notifier.model.Billing;
 import id.my.hendisantika.notifier.repository.BillingRepository;
 import id.my.hendisantika.notifier.service.BillingService;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -25,10 +26,11 @@ import java.util.Optional;
  */
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class BillingServiceImpl implements BillingService {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
-    private BillingRepository billingRepository;
+    private final BillingRepository billingRepository;
 
     @Override
     public Iterable<Billing> listAllBillings() {
