@@ -1,8 +1,9 @@
-package id.my.hendisantika.notifier.service;
+package id.my.hendisantika.notifier.service.impl;
 
 import id.my.hendisantika.notifier.exception.NotFoundException;
 import id.my.hendisantika.notifier.model.Customer;
 import id.my.hendisantika.notifier.repository.CustomerRepository;
+import id.my.hendisantika.notifier.service.CustomerService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
