@@ -1,5 +1,6 @@
 package id.my.hendisantika.notifier.service;
 
+import id.my.hendisantika.notifier.exception.NotFoundException;
 import id.my.hendisantika.notifier.model.Customer;
 import id.my.hendisantika.notifier.repository.CustomerRepository;
 import lombok.RequiredArgsConstructor;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by IntelliJ IDEA.
@@ -32,4 +34,12 @@ public class CustomerServiceImpl implements CustomerService {
         log.debug("listAllCustomers called");
         return customerRepository.findAll();
     }
+
+    @Override
+    public Optional<Customer> getCustomerById(Long id) {
+        log.debug("getCustomerById called");
+        return Optional.ofNullable(customerRepository.findById(id)).orElseThrow(() ->
+                new NotFoundException("Customer with id: " + id + "does not exist."));
+    }
+
 }
