@@ -46,4 +46,10 @@ public class BillingServiceImpl implements BillingService {
         logger.debug("saveBilling called");
         return billingRepository.save(billing);
     }
+
+    @Override
+    public void deleteBilling(Long id) {
+        logger.debug("deleteBilling called");
+        billingRepository.delete(id);
+    }
 }
