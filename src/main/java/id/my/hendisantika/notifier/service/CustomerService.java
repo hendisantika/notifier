@@ -3,7 +3,6 @@ package id.my.hendisantika.notifier.service;
 import id.my.hendisantika.notifier.model.Customer;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Created by IntelliJ IDEA.
@@ -19,7 +18,7 @@ public interface CustomerService {
 
     List<Customer> listAllCustomers();
 
-    Optional<Customer> getCustomerById(Long id);
+    Customer getCustomerById(Long id);
 
     Customer saveCustomer(Customer customer);
 

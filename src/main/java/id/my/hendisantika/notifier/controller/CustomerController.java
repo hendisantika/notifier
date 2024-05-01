@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -114,6 +115,33 @@ public class CustomerController {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
         } catch (Exception ex) {
             log.warn("Problem while adding customer:", ex);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    @PutMapping("/update/{id}")
+    @Operation(summary = "Update an existing customer.", description = "Update an existing customer.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Customer updated."),
+            @ApiResponse(responseCode = "404", description = "Customer does not exist in the system."),
+            @ApiResponse(responseCode = "500", description = "Server Internal Error")})
+    public ResponseEntity update(@PathVariable Long id, @RequestBody Customer customer) {
+        try {
+            Customer storedCustomer = customerService.getCustomerById(id);
+            storedCustomer.setFirstName(customer.getFirstName());
+            storedCustomer.setLastName(customer.getLastName());
+            storedCustomer.setEmail(customer.getEmail());
+            storedCustomer.setMobile(customer.getMobile());
+            customerService.saveCustomer(storedCustomer);
+            return ResponseEntity.status(HttpStatus.OK).body("Customer updated successfully");
+        } catch (NotFoundException nfe) {
+            log.warn("Customer not found!", nfe);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        } catch (DuplicateException de) {
+            log.warn("Could not update an existing Customer!", de);
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
+        } catch (Exception ex) {
+            log.warn("Problem in updating Customer!", ex);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
