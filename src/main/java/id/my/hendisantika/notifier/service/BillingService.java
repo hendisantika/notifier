@@ -4,6 +4,7 @@ import id.my.hendisantika.notifier.model.Billing;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by IntelliJ IDEA.
@@ -19,7 +20,7 @@ public interface BillingService {
 
     Iterable<Billing> listAllBillings();
 
-    Billing getBillingById(Long id);
+    Optional<Billing> getBillingById(Long id);
 
     Billing saveBilling(Billing billing);
 

@@ -9,6 +9,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -35,9 +37,9 @@ public class BillingServiceImpl implements BillingService {
     }
 
     @Override
-    public Billing getBillingById(Long id) {
+    public Optional<Billing> getBillingById(Long id) {
         logger.debug("getBillingById called");
-        return Optional.ofNullable(billingRepository.findOne(id)).orElseThrow(() ->
+        return Optional.ofNullable(billingRepository.findById(id)).orElseThrow(() ->
                 new NotFoundException("Customer with id: " + id + "does not exist."));
     }
 
@@ -50,6 +52,12 @@ public class BillingServiceImpl implements BillingService {
     @Override
     public void deleteBilling(Long id) {
         logger.debug("deleteBilling called");
-        billingRepository.delete(id);
+        billingRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Billing> findByDueDate(Instant date) {
+        logger.debug("findByDueDate called");
+        return billingRepository.findByDueDate(date);
     }
 }
