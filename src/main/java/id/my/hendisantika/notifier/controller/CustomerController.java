@@ -1,5 +1,6 @@
 package id.my.hendisantika.notifier.controller;
 
+import id.my.hendisantika.notifier.exception.DuplicateException;
 import id.my.hendisantika.notifier.exception.NotFoundException;
 import id.my.hendisantika.notifier.model.Customer;
 import id.my.hendisantika.notifier.service.CustomerService;
@@ -14,10 +15,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -88,6 +93,27 @@ public class CustomerController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         } catch (Exception ex) {
             log.warn("Problem in findByEmail for customer:", ex);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    @PostMapping(consumes = "application/json")
+    @Operation(summary = "Create a new customer.",
+            description = "Create a new customer and return the URL of the new resource in the Location header.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Customer created in the system."),
+            @ApiResponse(responseCode = "400", description = "Bad request."),
+            @ApiResponse(responseCode = "409", description = "Customer with specified email already exist in the system."),
+            @ApiResponse(responseCode = "500", description = "Server Internal Error")})
+    public ResponseEntity add(@RequestBody Customer customer) throws IOException {
+        try {
+            Customer result = customerService.saveCustomer(customer);
+            return ResponseEntity.status(HttpStatus.CREATED).location(new URI("/customers/" + result.getId())).body(null);
+        } catch (DuplicateException de) {
+            log.warn("Could not add duplicate customer:", de);
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
+        } catch (Exception ex) {
+            log.warn("Problem while adding customer:", ex);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
