@@ -1,9 +1,11 @@
 package id.my.hendisantika.notifier.service.impl;
 
+import id.my.hendisantika.notifier.model.Email;
 import id.my.hendisantika.notifier.service.EmailService;
 import id.my.hendisantika.notifier.service.JmsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.jms.annotation.JmsListener;
 import org.springframework.stereotype.Service;
 
 /**
@@ -22,4 +24,10 @@ import org.springframework.stereotype.Service;
 public class JmsServiceImpl implements JmsService {
 
     private final EmailService emailService;
+
+    @JmsListener(destination = "notifier.email", containerFactory = "jmsFactory")
+    public void consume(Email email) {
+        System.out.println("Received <" + email + ">");
+        emailService.send(email);
+    }
 }
