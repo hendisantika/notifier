@@ -1,10 +1,13 @@
 package id.my.hendisantika.notifier.service;
 
+import id.my.hendisantika.notifier.model.Customer;
 import id.my.hendisantika.notifier.repository.CustomerRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
@@ -24,4 +27,9 @@ public class CustomerServiceImpl implements CustomerService {
 
     private final CustomerRepository customerRepository;
 
+    @Override
+    public List<Customer> listAllCustomers() {
+        log.debug("listAllCustomers called");
+        return customerRepository.findAll();
+    }
 }
