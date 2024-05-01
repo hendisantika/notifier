@@ -1,6 +1,9 @@
 package id.my.hendisantika.notifier.service.impl;
 
+import id.my.hendisantika.notifier.model.Email;
 import id.my.hendisantika.notifier.service.EmailService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +18,17 @@ import org.springframework.stereotype.Service;
  * To change this template use File | Settings | File Templates.
  */
 @Service
+@RequiredArgsConstructor
 public class EmailServiceImpl implements EmailService {
 
-    private JavaMailSender emailSender;
+    private final JavaMailSender emailSender;
+
+    public void send(Email email) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(email.getTo());
+        message.setSubject("Email Notification");
+        message.setText(email.getContent());
+        message.setFrom("billingnotificationservices@gmail.com");
+        emailSender.send(message);
+    }
 }
