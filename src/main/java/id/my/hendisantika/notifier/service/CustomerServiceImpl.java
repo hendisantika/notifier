@@ -47,4 +47,10 @@ public class CustomerServiceImpl implements CustomerService {
         log.debug("saveCustomer called");
         return customerRepository.save(customer);
     }
+
+    @Override
+    public void deleteCustomer(Long id) {
+        log.debug("deleteProduct called");
+        customerRepository.deleteById(id);
+    }
 }
