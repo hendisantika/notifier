@@ -45,7 +45,6 @@ public class EmailStrategy implements NotificationStrategy {
 
     @Override
     public void generate(Billing billing, Customer customer) throws Exception {
-
         Map<String, Object> model = new HashMap<>();
         model.put("billing", billing);
         model.put("customer", customer);
