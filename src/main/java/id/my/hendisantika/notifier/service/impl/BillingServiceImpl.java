@@ -40,4 +40,10 @@ public class BillingServiceImpl implements BillingService {
         return Optional.ofNullable(billingRepository.findOne(id)).orElseThrow(() ->
                 new NotFoundException("Customer with id: " + id + "does not exist."));
     }
+
+    @Override
+    public Billing saveBilling(Billing billing) {
+        logger.debug("saveBilling called");
+        return billingRepository.save(billing);
+    }
 }
