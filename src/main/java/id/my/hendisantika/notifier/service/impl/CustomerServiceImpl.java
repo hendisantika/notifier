@@ -37,7 +37,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Customer getCustomerById(Long id) {
+    public Optional<Customer> getCustomerById(Long id) {
         log.debug("getCustomerById called");
         return Optional.ofNullable(customerRepository.findById(id)).orElseThrow(() ->
                 new NotFoundException("Customer with id: " + id + "does not exist."));

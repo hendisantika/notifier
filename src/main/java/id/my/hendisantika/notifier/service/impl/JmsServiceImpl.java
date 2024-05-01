@@ -27,7 +27,7 @@ public class JmsServiceImpl implements JmsService {
 
     @JmsListener(destination = "notifier.email", containerFactory = "jmsFactory")
     public void consume(Email email) {
-        System.out.println("Received <" + email + ">");
+        log.info("Received <{}>", email);
         emailService.send(email);
     }
 }

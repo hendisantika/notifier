@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Created by IntelliJ IDEA.
@@ -42,9 +41,9 @@ public class NotificationGeneratorServiceImpl implements NotificationGeneratorSe
 
         billings.forEach((Billing billing) -> {
             try {
-                Optional<Customer> customer = customerService.getCustomerById(billing.getCustomerId());
+                Customer customer = customerService.getCustomerById(billing.getCustomerId()).get();
                 for (NotificationType type : NotificationType.values()) {
-                    notificationContext.generate(type, billing, customer.orElse(null));
+                    notificationContext.generate(type, billing, customer);
                 }
 
                 billing.setNotificationStatus(NotificationStatus.GENERATED);

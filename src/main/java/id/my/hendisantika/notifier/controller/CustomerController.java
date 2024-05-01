@@ -71,7 +71,7 @@ public class CustomerController {
     @GetMapping(value = "/{id}")
     public ResponseEntity findById(@Param(value = "Id of customer") @PathVariable("id") Long id) {
         try {
-            Customer result = customerService.getCustomerById(id);
+            Customer result = customerService.getCustomerById(id).get();
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (NotFoundException nfe) {
             log.warn("Customer not found!", nfe);
@@ -129,7 +129,7 @@ public class CustomerController {
             @ApiResponse(responseCode = "500", description = "Server Internal Error")})
     public ResponseEntity update(@PathVariable Long id, @RequestBody Customer customer) {
         try {
-            Customer storedCustomer = customerService.getCustomerById(id);
+            Customer storedCustomer = customerService.getCustomerById(id).get();
             storedCustomer.setFirstName(customer.getFirstName());
             storedCustomer.setLastName(customer.getLastName());
             storedCustomer.setEmail(customer.getEmail());
