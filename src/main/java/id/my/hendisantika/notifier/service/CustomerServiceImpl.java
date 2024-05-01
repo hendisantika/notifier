@@ -42,4 +42,9 @@ public class CustomerServiceImpl implements CustomerService {
                 new NotFoundException("Customer with id: " + id + "does not exist."));
     }
 
+    @Override
+    public Customer saveCustomer(Customer customer) {
+        log.debug("saveCustomer called");
+        return customerRepository.save(customer);
+    }
 }
