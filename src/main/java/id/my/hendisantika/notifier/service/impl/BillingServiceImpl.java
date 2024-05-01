@@ -1,5 +1,6 @@
 package id.my.hendisantika.notifier.service.impl;
 
+import id.my.hendisantika.notifier.model.Billing;
 import id.my.hendisantika.notifier.repository.BillingRepository;
 import id.my.hendisantika.notifier.service.BillingService;
 import org.slf4j.Logger;
@@ -23,4 +24,10 @@ public class BillingServiceImpl implements BillingService {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private BillingRepository billingRepository;
+
+    @Override
+    public Iterable<Billing> listAllBillings() {
+        logger.debug("listAllBillings called");
+        return billingRepository.findAll();
+    }
 }
