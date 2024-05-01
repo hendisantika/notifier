@@ -59,4 +59,10 @@ public class CustomerServiceImpl implements CustomerService {
         log.debug("getCustomerByEmail called");
         return customerRepository.findByEmail(email);
     }
+
+    @Override
+    public List<Customer> getCustomersByLastName(String lastName) {
+        log.debug("getCustomersByLastName called");
+        return customerRepository.findByLastName(lastName);
+    }
 }
