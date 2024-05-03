@@ -56,4 +56,24 @@ class CustomerRepositoryTest {
         List<Customer> customers = customerRepository.findAll();
         assertEquals("Did not get all customers", 2, customers.size());
     }
+
+    @Test
+    public void testFindByLastName() {
+        // given
+        Customer customer = new Customer();
+        customer.setFirstName("Mina");
+        customer.setLastName("Rashidi");
+        customer.setEmail("mina.rashidi.86@gmail.com");
+        customer.setFirstName("9876543");
+        entityManager.persist(customer);
+
+        // when
+        List<Customer> customers = customerRepository.findByLastName(customer.getLastName());
+
+        // then
+        assertEquals("Found wrong number of Rashidi Ups", 1, customers.size());
+        assertEquals("Found wrong last name", "Rashidi", customers.get(0).getLastName());
+    }
+
+
 }
