@@ -1,5 +1,7 @@
 package id.my.hendisantika.notifier.repository;
 
+import id.my.hendisantika.notifier.model.Customer;
+import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -23,4 +25,24 @@ class CustomerRepositoryTest {
 
     @Autowired
     private CustomerRepository customerRepository;
+
+    @BeforeEach
+    public void setUp() throws Exception {
+        customerRepository.deleteAll();
+
+        Customer customer1 = new Customer();
+        customer1.setFirstName("Itadori");
+        customer1.setLastName("Yuji");
+        customer1.setEmail("yuji@yopmail.com");
+        customer1.setMobile("1234567");
+
+        Customer customer2 = new Customer();
+        customer2.setFirstName("Gojo");
+        customer2.setLastName("Satoru");
+        customer2.setEmail("gojo@yopmail.com");
+        customer2.setMobile("8765432");
+
+        customerRepository.save(customer1);
+        customerRepository.save(customer2);
+    }
 }
