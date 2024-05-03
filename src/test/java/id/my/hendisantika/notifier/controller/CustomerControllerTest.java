@@ -131,4 +131,13 @@ class CustomerControllerTest {
         assertThat(status).isEqualTo(HttpStatus.NOT_FOUND);
     }
 
+    @Test
+    public void testDeleteNotFound() throws JsonProcessingException {
+        String url = "/customers/10";
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<String> entity = new HttpEntity<>("", headers);
+        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.DELETE, entity, String.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+    }
 }
