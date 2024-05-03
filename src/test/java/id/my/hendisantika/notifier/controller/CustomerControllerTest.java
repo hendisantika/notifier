@@ -1,9 +1,17 @@
 package id.my.hendisantika.notifier.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import id.my.hendisantika.notifier.model.Customer;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.ResponseEntity;
+
+import java.util.Arrays;
+import java.util.List;
+
+import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
 /**
  * Created by IntelliJ IDEA.
@@ -22,4 +30,12 @@ class CustomerControllerTest {
 
     @Autowired
     private ObjectMapper objectMapper;
+
+    @Test
+    public void testFindAll() {
+        ResponseEntity<Customer[]> response = restTemplate.getForEntity("/customers", Customer[].class);
+        List<Customer> conditions = Arrays.asList(response.getBody());
+        assertThat(conditions).isNotNull();
+        assertThat(conditions).hasSize(2);
+    }
 }
