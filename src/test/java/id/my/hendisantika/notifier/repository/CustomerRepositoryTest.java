@@ -2,10 +2,15 @@ package id.my.hendisantika.notifier.repository;
 
 import id.my.hendisantika.notifier.model.Customer;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+
+import java.util.List;
+
+import static org.springframework.test.util.AssertionErrors.assertEquals;
 
 /**
  * Created by IntelliJ IDEA.
@@ -44,5 +49,11 @@ class CustomerRepositoryTest {
 
         customerRepository.save(customer1);
         customerRepository.save(customer2);
+    }
+
+    @Test
+    public void testLoadCustomers() {
+        List<Customer> customers = customerRepository.findAll();
+        assertEquals("Did not get all customers", 2, customers.size());
     }
 }
