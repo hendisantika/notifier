@@ -12,7 +12,7 @@ import id.my.hendisantika.notifier.model.Email;
  * Time: 08:35
  * To change this template use File | Settings | File Templates.
  */
-public interface JmsService {
+public interface KafkaService {
 
     void consume(Email email);
 }

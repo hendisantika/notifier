@@ -2,10 +2,11 @@ package id.my.hendisantika.notifier.service.impl;
 
 import id.my.hendisantika.notifier.model.Email;
 import id.my.hendisantika.notifier.service.EmailService;
-import id.my.hendisantika.notifier.service.JmsService;
+import id.my.hendisantika.notifier.service.KafkaService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.jms.annotation.JmsListener;
+import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;
 
 /**
@@ -21,12 +22,13 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class JmsServiceImpl implements JmsService {
+public class KafkaServiceImpl implements KafkaService {
 
     private final EmailService emailService;
 
-    @JmsListener(destination = "notifier.email", containerFactory = "jmsFactory")
-    public void consume(Email email) {
+    @KafkaListener(topics = "${spring.kafka.topic.name}", groupId = "notification",
+            concurrency = "${spring.kafka.consumer.level.concurrency:3}")
+    public void consume(@Payload Email email) {
         log.info("Received <{}>", email);
         emailService.send(email);
     }
