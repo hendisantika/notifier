@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 
 import java.util.Arrays;
@@ -48,5 +50,13 @@ class CustomerControllerTest {
         assertThat(condition.getFirstName()).isEqualTo("Mina");
         assertThat(condition.getLastName()).isEqualTo("Rashidi");
         assertThat(condition.getEmail()).isEqualTo("mina.rashidi.86@gmail.com");
+    }
+
+    @Test
+    public void testFindByIdWhenDoesNotExist() {
+        ResponseEntity<Customer> response = restTemplate.getForEntity("/customers/10", Customer.class);
+//        HttpStatus status = response.getStatusCode();
+        HttpStatusCode status = response.getStatusCode();
+        assertThat(status).isEqualTo(HttpStatus.NOT_FOUND);
     }
 }
