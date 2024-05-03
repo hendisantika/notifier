@@ -61,9 +61,9 @@ class CustomerRepositoryTest {
     public void testFindByLastName() {
         // given
         Customer customer = new Customer();
-        customer.setFirstName("Mina");
-        customer.setLastName("Rashidi");
-        customer.setEmail("mina.rashidi.86@gmail.com");
+        customer.setFirstName("Itadori");
+        customer.setLastName("Yuji");
+        customer.setEmail("yuji@yopmail.com");
         customer.setFirstName("9876543");
         entityManager.persist(customer);
 
@@ -75,5 +75,34 @@ class CustomerRepositoryTest {
         assertEquals("Found wrong last name", "Rashidi", customers.get(0).getLastName());
     }
 
+    @Test
+    public void testCRUD() throws Exception {
+        // Create a new game
+        Customer customer = new Customer();
+        customer.setFirstName("Itadori");
+        customer.setLastName("Yuji");
+        customer.setEmail("yuji@yopmail.com");
+        customer.setFirstName("9876543");
+        customerRepository.save(customer);
+
+        // Assert it was created
+        List<Customer> customers = customerRepository.findByLastName(customer.getLastName());
+        assertEquals("Did not find customer", customer.getLastName(), customers.get(0).getLastName());
+
+        // Edit the lastName
+        String newLastName = "Khaki";
+        customers.get(0).setLastName(newLastName);
+        customerRepository.save(customer);
+
+        // Assert it updated
+        List<Customer> updatedCustomer = customerRepository.findByLastName(customer.getLastName());
+        assertEquals("Did not update last name", newLastName, updatedCustomer.get(0).getLastName());
+
+        // Delete customer
+        customerRepository.delete(updatedCustomer.get(0));
+        // Assert not found
+        List<Customer> emptyCustomer = customerRepository.findByLastName(customer.getLastName());
+        assertEquals("Should have returned no customers", 0, emptyCustomer.size());
+    }
 
 }
