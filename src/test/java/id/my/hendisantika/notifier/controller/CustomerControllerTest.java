@@ -38,4 +38,15 @@ class CustomerControllerTest {
         assertThat(conditions).isNotNull();
         assertThat(conditions).hasSize(2);
     }
+
+    @Test
+    public void testFindById() {
+        ResponseEntity<Customer> response = restTemplate.getForEntity("/customers/1", Customer.class);
+        Customer condition = response.getBody();
+        assertThat(condition).isNotNull();
+        assertThat(condition.getId()).isEqualTo(1);
+        assertThat(condition.getFirstName()).isEqualTo("Mina");
+        assertThat(condition.getLastName()).isEqualTo("Rashidi");
+        assertThat(condition.getEmail()).isEqualTo("mina.rashidi.86@gmail.com");
+    }
 }
