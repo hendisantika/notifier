@@ -79,4 +79,20 @@ class CustomerControllerTest {
         assertThat(resource.getFirstName()).isEqualTo("Gojo");
         assertThat(resource.getLastName()).isEqualTo("Satoru");
     }
+
+    @Test
+    public void testUpdate() {
+        Customer customer = new Customer();
+        customer.setId(2L);
+        customer.setLastName("Megumi");
+        customer.setMobile("987654");
+        restTemplate.put("/customers/update", customer);
+
+        ResponseEntity<Customer> response = restTemplate.getForEntity("/customers/update/2", Customer.class);
+        Customer condition = response.getBody();
+        assertThat(condition).isNotNull();
+        assertThat(condition.getId()).isEqualTo(2);
+        assertThat(condition.getLastName()).isEqualTo("Megumi");
+        assertThat(condition.getMobile()).isEqualTo("987654");
+    }
 }
