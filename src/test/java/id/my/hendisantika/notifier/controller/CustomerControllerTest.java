@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 
+import java.net.URI;
 import java.util.Arrays;
 import java.util.List;
 
@@ -58,5 +59,24 @@ class CustomerControllerTest {
 //        HttpStatus status = response.getStatusCode();
         HttpStatusCode status = response.getStatusCode();
         assertThat(status).isEqualTo(HttpStatus.NOT_FOUND);
+    }
+
+    @Test
+    public void testAddNew() {
+        Customer customer = new Customer();
+        customer.setFirstName("Gojo");
+        customer.setLastName("Satoru");
+        customer.setEmail("gojo@yopmail.com");
+        customer.setMobile("7654389");
+        URI uri = restTemplate.postForLocation("/customers", customer);
+        assertThat(uri).isNotNull();
+
+        String id = uri.getPath().replace("/customers/", "");
+        ResponseEntity<Customer> response = restTemplate.getForEntity("/customers/" + id, Customer.class);
+        Customer resource = response.getBody();
+        assertThat(resource).isNotNull();
+        assertThat(resource.getId()).isEqualTo(Long.valueOf(id));
+        assertThat(resource.getFirstName()).isEqualTo("Gojo");
+        assertThat(resource.getLastName()).isEqualTo("Satoru");
     }
 }
