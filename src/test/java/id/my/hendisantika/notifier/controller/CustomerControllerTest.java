@@ -116,4 +116,19 @@ class CustomerControllerTest {
         ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.PUT, entity, String.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
+
+    @Test
+    public void testDelete() {
+        String url = "/customers/1";
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<String> entity = new HttpEntity<>("", headers);
+        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.DELETE, entity, String.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+        ResponseEntity<Customer> findResponse = restTemplate.getForEntity("/customers/1", Customer.class);
+        HttpStatusCode status = findResponse.getStatusCode();
+        assertThat(status).isEqualTo(HttpStatus.NOT_FOUND);
+    }
+
 }
