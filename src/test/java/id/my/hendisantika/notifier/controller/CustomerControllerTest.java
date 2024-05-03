@@ -1,13 +1,18 @@
 package id.my.hendisantika.notifier.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import id.my.hendisantika.notifier.model.Customer;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
 import java.net.URI;
@@ -94,5 +99,21 @@ class CustomerControllerTest {
         assertThat(condition.getId()).isEqualTo(2);
         assertThat(condition.getLastName()).isEqualTo("Megumi");
         assertThat(condition.getMobile()).isEqualTo("987654");
+    }
+
+    @Test
+    public void testUpdateNotFound() throws JsonProcessingException {
+        Customer condition = new Customer();
+        condition.setId(10L);
+        condition.setFirstName("Hanami");
+        condition.setMobile("876540");
+        String url = "/customers/update";
+
+        String request = objectMapper.writeValueAsString(condition);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<String> entity = new HttpEntity<>(request, headers);
+        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.PUT, entity, String.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 }
