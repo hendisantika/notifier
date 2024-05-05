@@ -7,6 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
+import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.util.List;
 
@@ -22,9 +27,26 @@ import static org.springframework.test.util.AssertionErrors.assertEquals;
  * Time: 08:55
  * To change this template use File | Settings | File Templates.
  */
+@Testcontainers
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class CustomerRepositoryTest {
+    @Container
+    static PostgreSQLContainer<?> postgresqlContainer = new PostgreSQLContainer("postgres:16.2-alpine3.19")
+            .withDatabaseName("notifier")
+            .withUsername("yuji")
+            .withPassword("53cr3t");
+
+    @DynamicPropertySource
+    static void setProperties(DynamicPropertyRegistry registry) {
+        registry.add("spring.datasource.url", postgresqlContainer::getJdbcUrl);
+        registry.add("spring.datasource.username", postgresqlContainer::getUsername);
+        registry.add("spring.datasource.password", postgresqlContainer::getPassword);
+    }
+
+//    @LocalServerPort
+//    private Integer port;
+
     @Autowired
     private TestEntityManager entityManager;
 
@@ -33,6 +55,7 @@ class CustomerRepositoryTest {
 
     @BeforeEach
     public void setUp() throws Exception {
+//        RestAssured.baseURI = "http://localhost:" + port;
         customerRepository.deleteAll();
 
         Customer customer1 = new Customer();

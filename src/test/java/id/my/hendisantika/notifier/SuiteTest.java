@@ -1,6 +1,5 @@
 package id.my.hendisantika.notifier;
 
-import id.my.hendisantika.notifier.repository.CustomerRepositoryTest;
 
 /**
  * Created by IntelliJ IDEA.
@@ -12,8 +11,8 @@ import id.my.hendisantika.notifier.repository.CustomerRepositoryTest;
  * Time: 08:54
  * To change this template use File | Settings | File Templates.
  */
-@RunWith(Suite.class)
-@Suite.SuiteClasses({CustomerRepositoryTest.class})
+//@RunWith(Suite.class)
+//@Suite.SuiteClasses({CustomerRepositoryTest.class})
 public class SuiteTest {
     // This class remains empty, it is used only as a holder for the above annotations
 }

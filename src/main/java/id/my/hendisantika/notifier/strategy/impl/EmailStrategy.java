@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.jms.core.JmsTemplate;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
@@ -36,7 +36,8 @@ public class EmailStrategy implements NotificationStrategy {
     private static final Logger LOGGER = LoggerFactory.getLogger(EmailStrategy.class);
 
     private final Configuration freeMarkerConfiguration;
-    private final JmsTemplate jmsTemplate;
+    //    private final JmsTemplate jmsTemplate;
+    private final KafkaTemplate kafkaTemplate;
 
     @Override
     public boolean match(NotificationType type) {
@@ -52,6 +53,7 @@ public class EmailStrategy implements NotificationStrategy {
         Template template = freeMarkerConfiguration.getTemplate("email.ftl");
         String content = FreeMarkerTemplateUtils.processTemplateIntoString(template, model);
         Email email = new Email(customer.getEmail(), content);
-        jmsTemplate.convertAndSend("notifier.email", email);
+//        jmsTemplate.convertAndSend("notifier.email", email);
+        kafkaTemplate.send("notifier.email", email);
     }
 }

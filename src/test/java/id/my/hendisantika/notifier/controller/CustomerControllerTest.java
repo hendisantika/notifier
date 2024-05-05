@@ -32,6 +32,7 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
  * To change this template use File | Settings | File Templates.
  */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+//@AutoConfigureMockMvc
 class CustomerControllerTest {
     @Autowired
     private TestRestTemplate restTemplate;
