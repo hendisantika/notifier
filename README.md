@@ -13,3 +13,9 @@ rest.
 In addition, I used Swagger for making documentation for our RESTful services.
 On pointing your browser to http://localhost:8080/swagger-ui.html, you will see the generated documentation rendered by
 Swagger UI.
+
+### Image Screenshot
+
+Swagger UI
+
+![Swagger UI](img/Swagger-UI.png "Swagger UI")
